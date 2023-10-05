@@ -12,7 +12,7 @@ public class Cats {
     public void setName(String name) {
         this.name = name;
     }
-    public  void Print(){
+    public  void print(){
         System.out.println(this.name);
     }
 }

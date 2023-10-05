@@ -25,7 +25,7 @@ public class Turtles extends Animal{
     }
 
     @Override
-    public void Print() {
+    public void print() {
         System.out.println("Turtles is " + super.getName() + " "+ super.getBreed() + " " + age + " "+  gender );
     }
 }

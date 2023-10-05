@@ -23,7 +23,7 @@ public abstract class Animal {
         this.breed = breed;
     }
 
-    public abstract void Print();
+    public abstract void print();
 
 
 }

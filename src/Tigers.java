@@ -14,8 +14,8 @@ public class Tigers extends Cats{
     }
 
     @Override
-    public void Print() {
-        super.Print();
+    public void print() {
+        super.print();
         System.out.println(this.numOfSrips);
     }
 }
