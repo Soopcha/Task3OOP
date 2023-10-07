@@ -11,6 +11,7 @@ public class Main4 {
         MyClass.print(); // можно вызывать без создания экземпляра класса
         //никакого нет override
         TigerTwo.print();
+        MyClass.printNormal();
 
     }
 
