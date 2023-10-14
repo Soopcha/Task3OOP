@@ -14,6 +14,12 @@ public class StudentWithPasport {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentWithPasport that = (StudentWithPasport) o;
+        //какая-то подобная проверка чтобы челики с налом паспортами умерли
+        if (passport==null){
+           return false;
+        }
+        //какая-то подобая проверка кончилась
+
         return Objects.equals(passport, that.passport);
     }
 

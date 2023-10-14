@@ -2,7 +2,7 @@ package task5;
 
 import java.util.Objects;
 
-public class Student {
+public class Student {  // не все поля значимы
     private String name;
     private int age;
 

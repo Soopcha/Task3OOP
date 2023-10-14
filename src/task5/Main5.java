@@ -11,14 +11,19 @@ public class Main5 {
         Student student3 = new Student("Семен", 19);
         Student student4 = student1;
 
-        System.out.println(student1 == student1);      //t
-        System.out.println(student1.equals(student1)); //t
+        System.out.println(student1 == student1);      //t    ==  - сравнивает ссылки
+        System.out.println(student1.equals(student1)); //t      equals сравнивает по полю
         System.out.println(student1 == student2);      //f
         System.out.println(student1.equals(student2)); //t
         System.out.println(student1 == student3);      //f
         System.out.println(student1.equals(student3)); //f
         System.out.println(student1 == student4);      //t
         System.out.println(student1.equals(student4)); //t
+        System.out.println("--");
+        System.out.println(student1.hashCode()==student1.hashCode());   //t
+        System.out.println(student1.hashCode()==student2.hashCode());   //t
+        System.out.println(student1.hashCode()==student3.hashCode());   //f
+        System.out.println(student1.hashCode()==student4.hashCode());   //t
 
         System.out.println();
         System.out.println();
@@ -36,6 +41,11 @@ public class Main5 {
         System.out.println(passport1.equals(passport3)); //f
         System.out.println(passport1 == passport4);      //t
         System.out.println(passport1.equals(passport4)); //t
+        System.out.println("--");
+        System.out.println(passport1.hashCode()==passport1.hashCode());
+        System.out.println(passport1.hashCode()==passport2.hashCode());
+        System.out.println(passport1.hashCode()==passport3.hashCode());
+        System.out.println(passport1.hashCode()==passport4.hashCode());
         System.out.println();
         System.out.println();
 
@@ -52,6 +62,11 @@ public class Main5 {
         System.out.println(studentps1.equals(studentps3)); //f
         System.out.println(studentps1 == studentps4);      //t
         System.out.println(studentps1.equals(studentps4)); //t
+        System.out.println("--");
+        System.out.println(studentps1.hashCode()==studentps1.hashCode());
+        System.out.println(studentps1.hashCode()==studentps2.hashCode());
+        System.out.println(studentps1.hashCode()==studentps3.hashCode());
+        System.out.println(studentps1.hashCode()==studentps4.hashCode());
         System.out.println();
         System.out.println();
         System.out.println();
@@ -74,6 +89,11 @@ public class Main5 {
         System.out.println(studentCh1.equals(studentCh3)); //f
         System.out.println(studentCh1 == studentCh4);      //t
         System.out.println(studentCh1.equals(studentCh4)); //t
+        System.out.println("--");
+        System.out.println(studentCh1.hashCode()==studentCh1.hashCode());
+        System.out.println(studentCh1.hashCode()==studentCh2.hashCode());
+        System.out.println(studentCh1.hashCode()==studentCh3.hashCode());
+        System.out.println(studentCh1.hashCode()==studentCh4.hashCode());
         System.out.println();
         System.out.println();
 
@@ -84,6 +104,7 @@ public class Main5 {
         StudentWithChangingField studentCh5 = new StudentWithChangingField("Иван",123,list);
         System.out.println(studentCh5 == studentCh1);
         System.out.println(studentCh5.equals(studentCh1));
+        System.out.println(studentCh5.hashCode()==studentCh1.hashCode());
     }
 
 }

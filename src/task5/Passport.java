@@ -3,6 +3,7 @@ package task5;
 import java.util.Objects;
 
 public class Passport {
+    //все значимые поля тк значатся в иквалсе и хеш коде
     private int id;
 
     public int getId() {
