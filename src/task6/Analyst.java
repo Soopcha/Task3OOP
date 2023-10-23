@@ -40,11 +40,11 @@ public class Analyst extends Employee implements ProductOwner, ScrumMaster,TeamL
 
     @Override
     public void assignTask(Employee employee, String task) {
-
+        System.out.println(employee.getName() + "аналист  получил таск "+ task);
     }
 
     @Override
     public void setDeadline(String task, Date deadline) {
-
+        System.out.println(task+"  время сдачи для аналиста  " + deadline);
     }
 }
