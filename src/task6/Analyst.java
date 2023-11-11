@@ -2,10 +2,12 @@ package task6;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Analyst extends Employee implements ProductOwner, ScrumMaster,TeamLeader{
 
-    private ArrayList<String> tasks;
+    private ArrayList<String> tasks;//но лучше писать вот так:
+    private List<String> tasks2 = new ArrayList<String>();
     public Analyst(String name, Integer age, Integer experience, ArrayList<String> tasks) {
         super(name, age, experience);
         this.tasks = tasks;
