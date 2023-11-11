@@ -3,7 +3,7 @@ package task7;
 public class MainEnum {
     public static void main(String[] args) {
 
-        Weekday today = Weekday.MONDAY;
+        Weekday today = Weekday.FRIDAY;
         System.out.println("На русском " + today.getRussianName());
         System.out.println("На английском " + today.getEnglishName());
 

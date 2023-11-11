@@ -9,7 +9,7 @@ public enum Weekday {
     SATURDAY("Суббота", "Saturday"),
     SUNDAY("Воскресенье", "Sunday");
 
-    private final String russianName;
+    private final String russianName;  //мапой можно было сделать
     private final String englishName;
 
     Weekday(String russianName, String englishName) {
