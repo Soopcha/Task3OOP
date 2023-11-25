@@ -1,8 +1,11 @@
 package task8Exception;
 
 public class MainEx {
+    //ероры это критические ошибки а эксепшины нет
 
     public static void main(String[] args) {
+        //пример проверяемого сключения
+        //трай кетч должны обрабатывать проверяемые
         try {
             CustomCheckedExMy.throwCheckedException();
         } catch (CheckedExMy e) {
@@ -15,11 +18,13 @@ public class MainEx {
 
 
         // Вызов метода, который бросает наше непроверяемое исключение
+        //try catch не нужен
         //CustomUnCheckedExMy.throwUncheckedException();
         System.out.println();
         System.out.println();
 
 
+        //пример выброса исключения
         try {
             throw new RuntimeException(" My manual exception");
         } catch (RuntimeException e) {
@@ -69,7 +74,7 @@ public class MainEx {
             performOperations();
         } catch (ArithmeticException | NullPointerException e) {
             // Обработка исключений ArithmeticException и NullPointerException
-            System.out.println("Caught an exception: " + e.getMessage());
+            System.out.println("Caught an exception ArithmeticException or NullPointerException : " + e.getMessage());
         } catch (Exception e) {
             // Обработка других исключений
             System.out.println("Caught an exception: " + e.getMessage());
@@ -78,7 +83,7 @@ public class MainEx {
 
     }
 
-    // Метод, который может бросить различные исключения
+    // Метод, который может бросить различные исключения выбрать то шо надо
     public static void performOperations() {
         int result = 5/0; // вызываем метод, который делит на ноль
         String str = null;
