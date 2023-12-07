@@ -83,7 +83,7 @@ public class MainColl {
         double averageAttendance = totalAttendance / studentList.size();
 
         System.out.println("Средняя посещаемость всех студентов: " + averageAttendance + "%");
-
+//xnjnjxnj
 
 
 
