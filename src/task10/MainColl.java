@@ -128,22 +128,29 @@ public class MainColl {
 
 
 
-        // Выводим самые непосещаемые занятия
-        Map<String, Integer> lessonAttendanceMap = new HashMap<>();
+        // Выводим самые непосещаемые занятия для каждого студента
         for (Student students : studentList) {
+            String leastAttendedLesson = null;
+            int minAttendance = 0;
+
             for (Map.Entry<String, Integer> entry : students.getAttendanceMap().entrySet()) {
-                lessonAttendanceMap.merge(entry.getKey(), entry.getValue(), Integer::sum);
+                for (Lessons lessons: students.getLessonsList()) {
+                    if (lessons.getLesson() == entry.getKey()) {
+                        if ((lessons.getNumLessons() - entry.getValue()) > minAttendance) {
+                            minAttendance = lessons.getNumLessons() - entry.getValue();
+                            leastAttendedLesson = entry.getKey();
+                        }
+                    }
+                }
+            }
+
+            if (leastAttendedLesson != null) {
+                System.out.println("Студент " + students.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
+            } else {
+                System.out.println("У студента " + students.getName() + " нет непосещаемых занятий.");
             }
         }
 
-        List<String> leastAttendedLessons = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : lessonAttendanceMap.entrySet()) {
-            if (entry.getValue() == 0) {
-                leastAttendedLessons.add(entry.getKey());
-            }
-        }
-
-        System.out.println("Самые непосещаемые занятия: " + leastAttendedLessons);
 
     }
 

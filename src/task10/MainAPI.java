@@ -1,9 +1,6 @@
 package task10;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainAPI {
@@ -21,12 +18,13 @@ public class MainAPI {
         Map<String, Integer> map1man = Map.of("Математика", 123, "Русский", 123, "Биология", 123);
         Map<String, Integer> map2man = Map.of("Математика", 13, "Русский", 13, "Биология", 23);
         Map<String, Integer> map3man = Map.of("Математика", 0, "Русский", 0, "Биология", 0);
+        Map<String, Integer> map4man = Map.of("Математика", 145, "Русский", 254, "Биология", 398);
 
         List<Student> studentList = List.of(
                 new Student("Паша", 2, map1man, lessonsList),
                 new Student("Сеня", 2, map2man, lessonsList),
                 new Student("Сеня", 2, map3man, lessonsList),
-                new Student("Олежик", 2, Map.of("Математика", 145, "Русский", 254, "Биология", 398), lessonsList)
+                new Student("Олежик", 2, map4man, lessonsList)
         );
 
         // Рассчитываем среднюю посещаемость
@@ -44,40 +42,51 @@ public class MainAPI {
                 .filter(student -> Math.abs(student.calculateAttendancePercentage() - 0.0) > threshold)
                 .forEach(student -> System.out.println("Студент " + student.getName() + " имеет среднюю посещаемость " + student.calculateAttendancePercentage() + "%."));
 
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
 
-/*
-        // Выводим самые непосещаемые занятия
-        Map<String, Integer> lessonAttendanceMap = new HashMap<>();
-        for (Student students : studentList) {
-            students.getAttendanceMap().forEach((lesson, attendance) ->
-                    lessonAttendanceMap.merge(lesson, attendance, Integer::sum));
-        }
+// Выводим самые непосещаемые занятия для каждого студента с использованием Stream API
+      /*  studentList.forEach(student -> {
+            String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+                    .filter(entry -> student.getLessonsList().stream()
+                            .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
+                    .max(Map.Entry.comparingByValue())
+                    .map(Map.Entry::getKey)
+                    .orElse(null);
 
-        List<String> leastAttendedLessons = lessonAttendanceMap.entrySet().stream()
-                .filter(entry -> entry.getValue() == 0)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+            if (leastAttendedLesson != null) {
+                System.out.println("Студент " + student.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
+            } else {
+                System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
+            }
+        });
 
-        System.out.println("Самые непосещаемые занятия: " + leastAttendedLessons);
+       */
 
 
- */
-        // Выводим самые непосещаемые занятия
-        Map<String, Integer> lessonAttendanceMap = studentList.stream()
-                .flatMap(student -> student.getAttendanceMap().entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        Integer::sum
-                ));
+        studentList.forEach(student -> {
+            String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+                    .filter(entry -> student.getLessonsList().stream()
+                            .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
+                    .max(Comparator.comparingInt(entry -> entry.getValue() - student.getLessonsList().stream()
+                            .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
+                            .findFirst()
+                            .map(Lessons::getNumLessons)
+                            .orElse(0)))
+                    .map(Map.Entry::getKey)
+                    .orElse(null);
 
-        List<String> leastAttendedLessons = lessonAttendanceMap.entrySet().stream()
-                .filter(entry -> entry.getValue() == 0)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+            if (leastAttendedLesson != null) {
+                System.out.println("Студент " + student.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
+            } else {
+                System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
+            }
+        });
 
-        System.out.println("Самые непосещаемые занятия: " + leastAttendedLessons);
+
+
 
     }
 }
