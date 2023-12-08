@@ -46,13 +46,19 @@ public class MainAPI {
         System.out.println();
         System.out.println();
 
-
-// Выводим самые непосещаемые занятия для каждого студента с использованием Stream API
-      /*  studentList.forEach(student -> {
+/*
+        studentList.forEach(student -> {
             String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+                    //карту посещений превращаем в набор записей (ключ-значение) и создаем поток (Stream) из этого набора.
                     .filter(entry -> student.getLessonsList().stream()
                             .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
-                    .max(Map.Entry.comparingByValue())
+                    // фильтруем записи в этом потоке, оставляя только те записи, ключи которых присутствуют в списке занятий студента
+                    .max(Comparator.comparingInt(entry ->
+                            student.getLessonsList().stream()
+                                    .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
+                                    .findFirst()
+                                    .map(lesson -> lesson.getNumLessons() - entry.getValue())
+                                    .orElse(0)))
                     .map(Map.Entry::getKey)
                     .orElse(null);
 
@@ -62,28 +68,51 @@ public class MainAPI {
                 System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
             }
         });
+        */
 
-       */
 
 
         studentList.forEach(student -> {
-            String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+            boolean hasAnyAbsences = student.getAttendanceMap().entrySet().stream()
                     .filter(entry -> student.getLessonsList().stream()
                             .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
-                    .max(Comparator.comparingInt(entry -> entry.getValue() - student.getLessonsList().stream()
-                            .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
-                            .findFirst()
-                            .map(Lessons::getNumLessons)
-                            .orElse(0)))
-                    .map(Map.Entry::getKey)
-                    .orElse(null);
+                    .anyMatch(entry ->
+                            student.getLessonsList().stream()
+                                    .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
+                                    .findFirst()
+                                    .map(lesson -> lesson.getNumLessons() - entry.getValue())
+                                    .orElse(0) > 0);
 
-            if (leastAttendedLesson != null) {
-                System.out.println("Студент " + student.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
+            if (hasAnyAbsences) {
+                String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+                        .filter(entry -> student.getLessonsList().stream()
+                                .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
+                        .max(Comparator.comparingInt(entry ->
+                                student.getLessonsList().stream()
+                                        .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
+                                        .findFirst()
+                                        .map(lesson -> lesson.getNumLessons() - entry.getValue())
+                                        .orElse(Integer.MIN_VALUE)))
+                        .map(Map.Entry::getKey)
+                        .orElse(null);
+
+                if (leastAttendedLesson != null) {
+                    System.out.println("Студент " + student.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
+                } else {
+                    System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
+                }
             } else {
-                System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
+                System.out.println("У студента " + student.getName() + " нет пропусков занятий.");
             }
         });
+
+
+
+
+
+
+
+
 
 
 
