@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainColl {
     public static void main(String[] args) {
@@ -42,10 +43,10 @@ public class MainColl {
 
 
         Map<String, Integer> map3man = new HashMap<>();
-        map2man.put("Математика", 0);
-        map2man.put("Русский", 0);
-        map2man.put("Биология", 0);
-        Student student3 = new Student("Сеня", 2, map3man, lessonsList);
+        map3man.put("Математика", 0);
+        map3man.put("Русский", 0);
+        map3man.put("Биология", 0);
+
 
 
 
@@ -68,10 +69,28 @@ public class MainColl {
         System.out.println();
         System.out.println();
 
+        Student student3 = new Student("Сеня", 2, map3man, lessonsList);
+        student3.checkAttendance();
+        double attendancePercentage3 = student3.calculateAttendancePercentage();
+        System.out.println("Процент посещаемости студента: " + attendancePercentage3 + "%");
+
+        System.out.println();
+        System.out.println();
+
+
+        Map<String, Integer> map4man = new HashMap<>();
+        map4man.put("Математика", 145);
+        map4man.put("Русский", 254);
+        map4man.put("Биология", 398);
+        Student student4 = new Student("Олежик", 2, map4man, lessonsList);
+
+
+
         List<Student> studentList = new ArrayList<>();
         studentList.add(student);
         studentList.add(student2);
         studentList.add(student3);
+        studentList.add(student4);
 
 
         // Рассчитываем среднюю посещаемость
@@ -91,17 +110,41 @@ public class MainColl {
 
 
 
-
-        double threshold = 0.00001; // Пороговое значение
+        //выводим челов у которых нет пропусков
+        double threshold = 99.99999; // Пороговое значение
 
         for (Student st : studentList) {
             double averageAttend = st.calculateAttendancePercentage();
 
             // Проверяем, близко ли значение к 0%
-            if (Math.abs(averageAttend - 0.0) < threshold) {
-                System.out.println("Студент " + st.getName() + " имеет среднюю посещаемость " + averageAttendance + "%.");
+            if (Math.abs(averageAttend - 0.0) > threshold) {
+                System.out.println("Студент " + st.getName() + " имеет среднюю посещаемость " + averageAttend + "%.");
             }
         }
+
+
+        System.out.println();
+        System.out.println();
+
+
+
+        // Выводим самые непосещаемые занятия
+        Map<String, Integer> lessonAttendanceMap = new HashMap<>();
+        for (Student students : studentList) {
+            for (Map.Entry<String, Integer> entry : students.getAttendanceMap().entrySet()) {
+                lessonAttendanceMap.merge(entry.getKey(), entry.getValue(), Integer::sum);
+            }
+        }
+
+        List<String> leastAttendedLessons = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : lessonAttendanceMap.entrySet()) {
+            if (entry.getValue() == 0) {
+                leastAttendedLessons.add(entry.getKey());
+            }
+        }
+
+        System.out.println("Самые непосещаемые занятия: " + leastAttendedLessons);
+
     }
 
 
