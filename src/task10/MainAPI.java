@@ -28,18 +28,18 @@ public class MainAPI {
         );
 
         // Рассчитываем среднюю посещаемость
-        double averageAttendance = studentList.stream()
-                .mapToDouble(Student::calculateAttendancePercentage)
-                .average()
-                .orElse(0.0);
+        double averageAttendance = studentList.stream()//создает поток (stream) объектов типа Student из списка studentList.
+                .mapToDouble(Student::calculateAttendancePercentage)// преобразовать каждый объект Student в double, вызывая метод calculateAttendancePercentage для каждого студента.
+                .average() //вычисления среднего значения для числового потока
+                .orElse(0.0); //указывает вернуть 0.0 в случае отсутствия значения (если поток пуст).
 
         System.out.println("Средняя посещаемость всех студентов: " + averageAttendance + "%");
 
         // Выводим студентов без пропусков
-        double threshold = 99.99999; // Пороговое значение
+        double threshold = 99.99999; // Пороговое значение мб и 100 просто написать
 
         studentList.stream()
-                .filter(student -> Math.abs(student.calculateAttendancePercentage() - 0.0) > threshold)
+                .filter(student -> Math.abs(student.calculateAttendancePercentage()) > threshold)
                 .forEach(student -> System.out.println("Студент " + student.getName() + " имеет среднюю посещаемость " + student.calculateAttendancePercentage() + "%."));
 
         System.out.println();
@@ -74,33 +74,38 @@ public class MainAPI {
 
         studentList.forEach(student -> {
             boolean hasAnyAbsences = student.getAttendanceMap().entrySet().stream()
-                    .filter(entry -> student.getLessonsList().stream()
+                    .filter(entry -> student.getLessonsList().stream()////фильтруются только те записи, у которых ключ (предмет) присутствует в списке занятий студента.
                             .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
                     .anyMatch(entry ->
                             student.getLessonsList().stream()
                                     .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
                                     .findFirst()
                                     .map(lesson -> lesson.getNumLessons() - entry.getValue())
-                                    .orElse(0) > 0);
+                                    .orElse(0) > 0);  //есть ли хотя бы один случай, когда разница между числом занятий и посещением больше 0
 
-            if (hasAnyAbsences) {
+            if (hasAnyAbsences) { //Если есть хотя бы один пропуск занятий, то входим в этот блок:
+                //определяем самый непосещаемый предмет.
                 String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
                         .filter(entry -> student.getLessonsList().stream()
                                 .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
                         .max(Comparator.comparingInt(entry ->
+                                //максимальная разница между числом занятий и посещением.
                                 student.getLessonsList().stream()
                                         .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
                                         .findFirst()
                                         .map(lesson -> lesson.getNumLessons() - entry.getValue())
                                         .orElse(Integer.MIN_VALUE)))
-                        .map(Map.Entry::getKey)
-                        .orElse(null);
+                        .map(Map.Entry::getKey)//записи берется кллюч -  сам предмет.
+                        .orElse(null);  //что нет пропусков занятий --- возвращается null
 
-                if (leastAttendedLesson != null) {
+                if (leastAttendedLesson != null) { //Если есть непосещаемый предмет
                     System.out.println("Студент " + student.getName() + " имеет самое непосещаемое занятие: " + leastAttendedLesson);
-                } else {
+                }
+                    /* else {  //это не нужно тк почему-то н
                     System.out.println("У студента " + student.getName() + " нет непосещаемых занятий.");
                 }
+
+                     */
             } else {
                 System.out.println("У студента " + student.getName() + " нет пропусков занятий.");
             }

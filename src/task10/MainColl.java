@@ -102,7 +102,7 @@ public class MainColl {
         double averageAttendance = totalAttendance / studentList.size();
 
         System.out.println("Средняя посещаемость всех студентов: " + averageAttendance + "%");
-//xnjnjxnj
+
 
 
 
@@ -133,7 +133,7 @@ public class MainColl {
             String leastAttendedLesson = null;
             int minAttendance = 0;
 
-            for (Map.Entry<String, Integer> entry : students.getAttendanceMap().entrySet()) {
+            for (Map.Entry<String, Integer> entry : students.getAttendanceMap().entrySet()) {// .entrySet - возвращает множество обьектов типа Map.Entry
                 for (Lessons lessons: students.getLessonsList()) {
                     if (lessons.getLesson() == entry.getKey()) {
                         if ((lessons.getNumLessons() - entry.getValue()) > minAttendance) {
