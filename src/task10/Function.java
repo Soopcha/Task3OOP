@@ -1,37 +1,14 @@
 package task10;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Student {
-    private String name;
-    private Map<String,Integer> attendanceMap;
+public class Function {
 
-    public Map<String, Integer> getAttendanceMap() {
-        return attendanceMap;
-    }
+    public static void checkAttendance(Student student, Group group) {
+        Map<String,Integer> attendanceMap = student.getAttendanceMap();
+        List<Lessons> lessonsList = group.getLessonsList();
 
-    public void setAttendanceMap(Map<String, Integer> attendanceMap) {
-        this.attendanceMap = attendanceMap;
-    }
-
-
-    public Student(String name, Map<String, Integer> attendanceMap) {
-        this.name = name;
-        this.attendanceMap = attendanceMap;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-   /* public void checkAttendance() {
         for (Map.Entry<String, Integer> entry : attendanceMap.entrySet()) {
             String lessonName = entry.getKey();
             Integer attendedLessons = entry.getValue();
@@ -45,8 +22,9 @@ public class Student {
         }
     }
 
-
-    public double calculateAttendancePercentage() { //считает проуннт посещаемости
+    public static double calculateAttendancePercentage(Student student, Group group) { //считает проуннт посещаемости
+        Map<String,Integer> attendanceMap = student.getAttendanceMap();
+        List<Lessons> lessonsList = group.getLessonsList();
         int totalLessons = 0;
         int attendedLessons = 0;
 
@@ -68,7 +46,4 @@ public class Student {
         double attendancePercentage = (double) attendedLessons / totalLessons * 100;
         return attendancePercentage;
     }
-
-    */
-
 }

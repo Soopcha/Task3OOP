@@ -16,12 +16,17 @@ import java.util.stream.Collectors;
 public class MainColl {
     public static void main(String[] args) {
 
-
         List<Lessons> lessonsList = new ArrayList<>();
 
         lessonsList.add(new Lessons(145, "Математика"));
         lessonsList.add(new Lessons(254, "Русский"));
         lessonsList.add(new Lessons(398, "Биология"));
+
+
+
+
+
+
 
         for (Lessons lesson : lessonsList) {
             System.out.println("Количество уроков: " + lesson.getNumLessons() + ", Название урока: " + lesson.getLesson());
@@ -47,12 +52,28 @@ public class MainColl {
         map3man.put("Русский", 0);
         map3man.put("Биология", 0);
 
+        Map<String, Integer> map4man = new HashMap<>();
+        map4man.put("Математика", 145);
+        map4man.put("Русский", 254);
+        map4man.put("Биология", 398);
 
 
 
-        Student student = new Student("Паша", 2, map1man, lessonsList);
-        student.checkAttendance();
-        double attendancePercentage = student.calculateAttendancePercentage();
+        Student student = new Student("Паша", map1man);
+        Student student2 = new Student("Сеня", map2man);
+        Student student3 = new Student("Сеня",  map3man);
+        Student student4 = new Student("Олежик",  map4man);
+
+
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(student);
+        studentList.add(student2);
+        studentList.add(student3);
+        studentList.add(student4);
+        Group group = new Group(2,studentList, lessonsList);
+
+        Function.checkAttendance(student,group);
+        double attendancePercentage = Function.calculateAttendancePercentage(student,group);
         System.out.println("Процент посещаемости студента: " + attendancePercentage + "%");
 
 
@@ -61,42 +82,30 @@ public class MainColl {
         System.out.println();
 
 
-        Student student2 = new Student("Сеня", 2, map2man, lessonsList);
-        student2.checkAttendance();
-        double attendancePercentage2 = student2.calculateAttendancePercentage();
+
+        Function.checkAttendance(student2,group);
+        double attendancePercentage2 = Function.calculateAttendancePercentage(student2,group);
         System.out.println("Процент посещаемости студента: " + attendancePercentage2 + "%");
 
         System.out.println();
         System.out.println();
 
-        Student student3 = new Student("Сеня", 2, map3man, lessonsList);
-        student3.checkAttendance();
-        double attendancePercentage3 = student3.calculateAttendancePercentage();
+        Function.checkAttendance(student3,group);
+        double attendancePercentage3 = Function.calculateAttendancePercentage(student3,group);
         System.out.println("Процент посещаемости студента: " + attendancePercentage3 + "%");
 
         System.out.println();
         System.out.println();
 
 
-        Map<String, Integer> map4man = new HashMap<>();
-        map4man.put("Математика", 145);
-        map4man.put("Русский", 254);
-        map4man.put("Биология", 398);
-        Student student4 = new Student("Олежик", 2, map4man, lessonsList);
 
 
 
-        List<Student> studentList = new ArrayList<>();
-        studentList.add(student);
-        studentList.add(student2);
-        studentList.add(student3);
-        studentList.add(student4);
 
-
-        // Рассчитываем среднюю посещаемость
+        // Рассчитываем среднюю посещаемость по группе
         double totalAttendance = 0.0;
         for (Student st : studentList) {
-            totalAttendance += st.calculateAttendancePercentage();
+            totalAttendance += Function.calculateAttendancePercentage(st,group);
         }
 
         double averageAttendance = totalAttendance / studentList.size();
@@ -114,7 +123,7 @@ public class MainColl {
         double threshold = 99.99999; // Пороговое значение
 
         for (Student st : studentList) {
-            double averageAttend = st.calculateAttendancePercentage();
+            double averageAttend = Function.calculateAttendancePercentage(st,group);
 
             // Проверяем, близко ли значение к 0%
             if (Math.abs(averageAttend - 0.0) > threshold) {
@@ -134,7 +143,7 @@ public class MainColl {
             int minAttendance = 0;
 
             for (Map.Entry<String, Integer> entry : students.getAttendanceMap().entrySet()) {// .entrySet - возвращает множество обьектов типа Map.Entry
-                for (Lessons lessons: students.getLessonsList()) {
+                for (Lessons lessons: group.getLessonsList()) {
                     if (lessons.getLesson() == entry.getKey()) {
                         if ((lessons.getNumLessons() - entry.getValue()) > minAttendance) {
                             minAttendance = lessons.getNumLessons() - entry.getValue();
