@@ -132,8 +132,10 @@ public class MainAPI {
         // Рассчитываем среднюю посещаемость по группе
         double averageAttendance = studentList.stream()
                 .mapToDouble(student -> Function.calculateAttendancePercentage(student, new Group(2, studentList, lessonsList)))
-                .average()
-                .orElse(0.0);
+                //mapToDouble применяет функцию calculateAttendancePercentage к каждому студенту, возвращая стрим примитивов double.
+                .average()//вычисляет среднее значение
+                .orElse(0.0); //предоставляет значение по умолчанию, если стрим пустпредоставляет значение по умолчанию, если стрим пуст
+
 
         System.out.println("Средняя посещаемость всех студентов: " + averageAttendance + "%");
 
@@ -141,16 +143,23 @@ public class MainAPI {
         double threshold = 99.99999; // Пороговое значение
         studentList.stream()
                 .filter(student -> Math.abs(Function.calculateAttendancePercentage(student, new Group(2, studentList, lessonsList)) - 0.0) > threshold)
+                //filter оставляет только тех студентов, у которых посещаемость превышает пороговое значение.
                 .forEach(student -> System.out.println("Студент " + student.getName() + " имеет среднюю посещаемость " + Function.calculateAttendancePercentage(student, new Group(2, studentList, lessonsList)) + "%."));
+        //forEach выводит информацию о каждом студенте без пропусков.
 
         System.out.println("\n");
 
         // Выводим самые непосещаемые занятия для каждого студента
         studentList.forEach(student -> {
+            //перебирает каждого студента в studentList
             boolean hasAnyAbsences = student.getAttendanceMap().entrySet().stream()
-                    .filter(entry -> lessonsList.stream()////фильтруются только те записи, у которых ключ (предмет) присутствует в списке занятий студента.
+                    //Создается булева перем, которая проверяет, есть ли у студента хотя бы одно пропущенное занятие.
+                    //Используется Stream API для обработки записей о посещении студента (entrySet() используется для получения набора записей)
+                    .filter(entry -> lessonsList.stream()//
+                            // фильтруются: только те записи, у которых ключ (предмет) присутствует в списке занятий студента.
                             .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
                     .anyMatch(entry ->
+                            //Проверка, есть ли хотя бы один случай, когда разница между числом занятий и посещением больше 0
                             lessonsList.stream()
                                     .filter(lesson -> lesson.getLesson().equals(entry.getKey()))
                                     .findFirst()
@@ -160,6 +169,10 @@ public class MainAPI {
             if (hasAnyAbsences) { //Если есть хотя бы один пропуск занятий, то входим в этот блок:
                 //определяем самый непосещаемый предмет.
                 String leastAttendedLesson = student.getAttendanceMap().entrySet().stream()
+                        //Определяется самый непосещаемый предмет
+                        //Фильтруются только те записи, у которых ключ (предмет) присутствует в списке занятий студента.
+                        //Вычисляется максимальная разница между числом занятий и посещением.
+                        //Возвращается ключ (предмет) с максимальной разницей или null, если нет пропусков занятий.
                         .filter(entry -> lessonsList.stream()
                                 .anyMatch(lesson -> lesson.getLesson().equals(entry.getKey())))
                         .max(Comparator.comparingInt(entry ->
